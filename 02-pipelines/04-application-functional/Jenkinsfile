@@ -1,0 +1,20 @@
+node {
+    git url: 'https://github.com/afym/springboot-application-test.git'
+}
+
+pipeline {
+    agent {
+        docker { image 'angelfym/springboot-application-test:latest' }
+    }
+    // prevent fail in npm install
+    environment {
+        HOME = '.'
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'newman run application-test.json'
+            }
+        }
+    }
+}
